@@ -1,0 +1,10 @@
+---
+old_docker_packages: "docker,\
+                      docker-engine,\
+                      docker.io"
+
+dependencies: "apt-transport-https,\
+               ca-certificates,\
+               curl,\
+               gnupg2,\
+               software-properties-common"

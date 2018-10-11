@@ -1,0 +1,12 @@
+---
+- name: Downloading get-nvm
+  become: yes
+  become_user: vagrant
+  git:
+    dest: "{{ getnvm_dir }}"
+    repo: https://github.com/mdrose/get-nvm.git
+
+- name: Installing nvm
+  become: yes
+  become_user: vagrant
+  command: "{{ getnvm_dir }}/get-nvm.sh"

@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    project: ansible
+    project_dest: "{{ project }}"
+  roles:
+    - dev-base
+    - docker
+    - nvm
+    - desktop
+  pre_tasks:
+    - name: Update everything
+      yum:
+        name: "*"
+        update_cache: yes
+        state: latest
+      when: ansible_os_family == "RedHat"
+
+    - name: Update everything
+      apt:
+        update_cache: yes
+        state: latest
+        upgrade: full
+      when: ansible_os_family == "Debian"

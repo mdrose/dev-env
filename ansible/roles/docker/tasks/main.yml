@@ -1,0 +1,48 @@
+---
+- name: Adding system variables
+  include_vars:
+    file: "{{ ansible_os_family }}.yml"
+
+- name: Remove older Docker packages
+  package:
+    name: "{{ old_docker_packages }}"
+    state: absent
+
+- name: Docker dependencies
+  package:
+    name: "{{ dependencies }}"
+    state: present
+
+- name: Add Docker repo key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    validate_certs: yes
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Add Docker repo
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Add Docker repo
+  yum_repository:
+    name: docker-ce
+    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+    gpgcheck: yes
+    gpgkey: https://download.docker.com/linux/centos/gpg
+    description: Docker CE Stable - $basearch
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install Docker
+  package:
+    name: docker-ce
+    state: present
+
+- name: Start Docker daemon
+  service:
+    name: docker
+    state: started
+    enabled: yes

@@ -1,0 +1,34 @@
+---
+- name: Add MongoDB repo key
+  apt_key:
+    url: https://www.mongodb.org/static/pgp/server-4.0.asc
+    validate_certs: yes
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Add MongoDB repo
+  apt_repository:
+    repo: deb http://repo.mongodb.org/apt/debian {{ ansible_distribution_release }}/mongodb-org/4.0 main
+    state: present
+  when: ansible_os_family == "Debian"
+
+- name: Add MongoDB repo
+  yum_repository:
+    name: mongodb-org-4.0
+    baseurl: https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/4.0/x86_64/
+    gpgcheck: yes
+    gpgkey: https://www.mongodb.org/static/pgp/server-4.0.asc
+    description: MongoDB Repository
+    state: present
+  when: ansible_os_family == "RedHat"
+
+- name: Install MongoDB
+  package:
+    name: mongodb-org
+    state: present
+
+- name: Start MongoDD
+  service:
+    name: mongod
+    state: started
+    enabled: yes

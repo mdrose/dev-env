@@ -1,0 +1,20 @@
+---
+- name: Adding system variables
+  include_vars:
+    file: "{{ ansible_os_family }}.yml"
+
+- name: Install epel-release repo
+  yum:
+    name: epel-release
+  when: ansible_os_family == "RedHat"
+
+- name: Install Development Environment / Utils
+  package:
+    name: git,vim,{{ ctags }},{{ python_pip }},{{ python3 }},{{ python3_pip }},{{ virtualenv }},tmux
+
+- name: Grabbing dotfiles
+  become: yes
+  become_user: vagrant
+  git:
+    dest: /home/vagrant/{{ dotfiles_repo }}
+    repo: https://github.com/{{ github_user }}/{{ dotfiles_repo }}.git

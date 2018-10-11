@@ -1,0 +1,6 @@
+---
+ctags: ctags
+python_pip: python2-pip
+python3: python34
+python3_pip: python34-pip
+virtualenv: python-virtualenv
