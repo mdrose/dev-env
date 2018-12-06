@@ -14,6 +14,8 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "debian" do |debian|
     debian.vm.box = "debian/stretch64"
+    debian.vm.box_download_checksum = "574547807c66d596c92402889e95b41ac22738633e4143db4f7abbb786486454"
+    debian.vm.box_download_checksum_type = "sha256"
   end
 
   # Network settings
